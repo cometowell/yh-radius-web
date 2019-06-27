@@ -3,47 +3,34 @@
     <a-layout-sider collapsible v-model="collapsed">
       <div class="logo"/>
       <a-menu mode="inline" theme="dark" :openKeys="openKeys" @openChange="onOpenChange">
-        <a-sub-menu key="sub1">
+        <a-sub-menu v-for="menu in menus" :key="menu.key">
           <span slot="title">
             <a-icon type="mail"/>
-            <span>Navigation One</span>
+            <span>{{menu.name}}</span>
           </span>
-          <a-menu-item key="1">
-            <a-icon type="caret-right"/>Option 1
+          <a-menu-item v-for="c in menu.children" :key="c.key">
+            <a-icon type="right" /> {{c.name}}
           </a-menu-item>
-          <a-menu-item key="2">Option 2</a-menu-item>
-          <a-menu-item key="3">Option 3</a-menu-item>
-          <a-menu-item key="4">Option 4</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2">
-          <span slot="title">
-            <a-icon type="appstore"/>
-            <span>Navigation Two</span>
-          </span>
-          <a-menu-item key="5">Option 5</a-menu-item>
-          <a-menu-item key="6">Option 6</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub4">
-          <span slot="title">
-            <a-icon type="setting"/>
-            <span>Navigation Three</span>
-          </span>
-          <a-menu-item key="9">Option 9</a-menu-item>
-          <a-menu-item key="10">Option 10</a-menu-item>
-          <a-menu-item key="11">Option 11</a-menu-item>
-          <a-menu-item key="12">Option 12</a-menu-item>
         </a-sub-menu>
       </a-menu>
     </a-layout-sider>
   </a-layout>
 </template>
 <script>
+var menus = 
+    [{name:"测试1", key:"test1",children:[{name:"测试1-1", key:"test1-1"}]},
+    {name:"测试2", key:"test2",children:[{name:"测试2-1", key:"test2-1"}]},
+    {name:"测试3", key:"test3",children:[{name:"测试3-1", key:"test3-1"}]},
+    {name:"测试4", key:"test4",children:[{name:"测试4-1", key:"test4-1"}]},
+    {name:"测试5", key:"test5",children:[{name:"测试5-1", key:"test5-1"}]}
+    ];
 export default {
   data() {
     return {
+        menus: menus,
       collapsed: false,
-      rootSubmenuKeys: ["sub1", "sub2", "sub4"],
-      openKeys: ["sub1"]
+      rootSubmenuKeys: ["test1", "test2", "test3", "test4", "test5"],
+      openKeys: ["test1"]
     };
   },
   methods: {
@@ -57,14 +44,17 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     }
-  }
+  },
+  mounted() {
+
+  },
 };
 </script>
 
 <style>
 .logo {
   height: 32px;
-  background-image: url('../assets/logo.png');
+  background-image: url("../assets/logo.png");
   margin: 16px;
 }
 </style>
