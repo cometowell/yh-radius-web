@@ -3,16 +3,20 @@
     <a-layout-sider collapsible v-model="collapsed">
       <div class="logo" />
       <a-menu mode="inline" theme="dark" :openKeys="openKeys" @openChange="onOpenChange">
-        <a-sub-menu v-for="menu in menus" :key="menu.frontKey">
-          <span slot="title">
-            <a-icon :type="menu.icon" />
-            <span>{{menu.name}}</span>
-          </span>
-          <a-menu-item v-for="(c,index) in menu.children" :key="menu.frontKey + index">
-            <i class="glyphicon glyphicon-record"/>
-            {{c.name}}
+        <template v-for="menu in menus">
+          <a-sub-menu v-if="hasChild(menu)" :key="menu.frontKey">
+            <span slot="title">
+              <a-icon :type="menu.icon" />
+              <span>{{menu.name}}</span>
+            </span>
+              <a-menu-item v-for="(c,index) in menu.children" @click="jumpTo(menu.frontRouter)" :key="menu.frontKey + index">
+                <i class="glyphicon glyphicon-record"/> {{c.name}}
+              </a-menu-item>
+          </a-sub-menu>
+          <a-menu-item v-else :key="menu.frontKey" @click="jumpTo(menu.frontRouter)">
+            <a-icon :type="menu.icon" /><span>{{menu.name}}</span>
           </a-menu-item>
-        </a-sub-menu>
+        </template>
       </a-menu>
     </a-layout-sider>
   </a-layout>
@@ -42,12 +46,18 @@ export default {
        this.$axios.post("/session/resource").then(data =>{
          var menus = data.data.data;
          menus.forEach((element, index) => {
-           this.menus.push(element);
-           this.rootSubmenuKeys.push(element.frontKey);
+            this.menus.push(element);
+            this.rootSubmenuKeys.push(element.frontKey);
          });
        }).catch((error) => {
           console.log(error);
        });
+    },
+    hasChild(menu) {
+      return menu.children.length > 0 && menu.children[0].level != 3;
+    },
+    jumpTo(frontRouter) {
+       this.$router.push(frontRouter);
     }
   },
   mounted() {
