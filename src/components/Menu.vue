@@ -1,15 +1,16 @@
 <template>
   <a-layout id="components-layout-demo-side" style="min-height: 100vh">
     <a-layout-sider collapsible v-model="collapsed">
-      <div class="logo"/>
+      <div class="logo" />
       <a-menu mode="inline" theme="dark" :openKeys="openKeys" @openChange="onOpenChange">
-        <a-sub-menu v-for="menu in menus" :key="menu.key">
+        <a-sub-menu v-for="menu in menus" :key="menu.frontKey">
           <span slot="title">
-            <a-icon type="mail"/>
+            <a-icon :type="menu.icon" />
             <span>{{menu.name}}</span>
           </span>
-          <a-menu-item v-for="c in menu.children" :key="c.key">
-            <a-icon type="right" /> {{c.name}}
+          <a-menu-item v-for="(c,index) in menu.children" :key="menu.frontKey + index">
+            <i class="glyphicon glyphicon-record"/>
+            {{c.name}}
           </a-menu-item>
         </a-sub-menu>
       </a-menu>
@@ -17,20 +18,13 @@
   </a-layout>
 </template>
 <script>
-var menus = 
-    [{name:"测试1", key:"test1",children:[{name:"测试1-1", key:"test1-1"}]},
-    {name:"测试2", key:"test2",children:[{name:"测试2-1", key:"test2-1"}]},
-    {name:"测试3", key:"test3",children:[{name:"测试3-1", key:"test3-1"}]},
-    {name:"测试4", key:"test4",children:[{name:"测试4-1", key:"test4-1"}]},
-    {name:"测试5", key:"test5",children:[{name:"测试5-1", key:"test5-1"}]}
-    ];
 export default {
   data() {
     return {
-        menus: menus,
+      menus: [],
       collapsed: false,
-      rootSubmenuKeys: ["test1", "test2", "test3", "test4", "test5"],
-      openKeys: ["test1"]
+      rootSubmenuKeys: [],
+      openKeys: []
     };
   },
   methods: {
@@ -43,11 +37,22 @@ export default {
       } else {
         this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
+    },
+    loadMenus() {
+       this.$axios.post("/session/resource").then(data =>{
+         var menus = data.data.data;
+         menus.forEach((element, index) => {
+           this.menus.push(element);
+           this.rootSubmenuKeys.push(element.frontKey);
+         });
+       }).catch((error) => {
+          console.log(error);
+       });
     }
   },
   mounted() {
-
-  },
+    this.loadMenus();
+  }
 };
 </script>
 

@@ -13,7 +13,10 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 export default {
   name: "index",
-  components: { Menu, "R-Footer":Footer, "R-Header": Header }
+  components: { Menu, "R-Footer":Footer, "R-Header": Header },
+  methods: {
+    
+  }
 };
 </script>
 
