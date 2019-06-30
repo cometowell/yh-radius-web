@@ -1,5 +1,4 @@
 <template>
-  <a-layout id="components-layout-demo-side" style="min-height: 100vh">
     <a-layout-sider collapsible v-model="collapsed">
       <div class="logo" />
       <a-menu mode="inline" theme="dark" :openKeys="openKeys" @openChange="onOpenChange">
@@ -9,7 +8,7 @@
               <a-icon :type="menu.icon" />
               <span>{{menu.name}}</span>
             </span>
-              <a-menu-item v-for="(c,index) in menu.children" @click="jumpTo(menu.frontRouter)" :key="menu.frontKey + index">
+              <a-menu-item v-for="(c,index) in menu.children" @click="jumpTo(c.frontRouter)" :key="menu.frontKey + index">
                 <i class="glyphicon glyphicon-record"/> {{c.name}}
               </a-menu-item>
           </a-sub-menu>
@@ -19,7 +18,6 @@
         </template>
       </a-menu>
     </a-layout-sider>
-  </a-layout>
 </template>
 <script>
 export default {

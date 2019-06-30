@@ -13,8 +13,12 @@ export default new Router({
     },
     {
       path: '/index',
-      name: 'index',
-      component: () => import('@/views/Index')
+      component: () => import('@/views/Main'),
+      children: [{
+        path: '',
+        name: 'index',
+        component: () => import('@/views/index/Index')
+      }]
     }
   ]
 })
