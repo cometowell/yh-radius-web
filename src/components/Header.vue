@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     getUser() {
-      this.$axios.post("/session/manager/info", {}
+      this.$axios.post("/system/user/session/info", {}
       ).then(response => {
             this.realName = response.data.data.manager.realName;
             this.$store.commit("permissionSetter", response.data.data.buttonPermissions);

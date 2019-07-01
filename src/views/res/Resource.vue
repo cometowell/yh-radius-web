@@ -5,12 +5,12 @@
       <a-breadcrumb-item>菜单列表</a-breadcrumb-item>
     </a-breadcrumb>
     <div :class="'content-div'">
-      <a-table style="margin-bottom: 20px"
+      <a-table
         :columns="columns"
         :dataSource="data"
         :bordered=true
         :rowKey="record => record.id"
-        class="components-table-demo-nested"
+        class="tableClass components-table-demo-nested"
         :pagination="false"
       >
         <a-table
@@ -66,8 +66,7 @@ export default {
   methods: {
     listResource() {
       this.loading = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/resource/list", {})
+      this.$axios.post("/resource/list", {})
         .then(response => {
           this.loading = false;
           this.data = response.data.data;

@@ -51,11 +51,11 @@
           </a-form>
         </template>
       </div>
-      <a-table
+      <a-table class="tableClass"
         :columns="columns"
         :dataSource="data"
         :pagination="pagination"
-        :scroll="{ x: 980}"
+        :scroll="{ x: 1180}"
         :rowKey="record => record.onlineUser.id"
         @change="searchOnlineByParams"
       >
@@ -66,13 +66,13 @@
                 <a-icon type="question-circle-o" />
               </a-tooltip>
             </span>
-            <a v-if="$store.getters.getButtonIds.indexOf(310) != -1" style="color:#da6868" @click="offlineUser(record.onlineUser.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(310) != -1" style="color:#da6868" @click="offlineUser(record.onlineUser.id)">
               下线 <a-icon type="login" /> 
             </a>
           </span>
           <a-divider type="vertical"/>
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(320) != -1" style="color:#9a633b" @click="deleteOnline(record.onlineUser.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(320) != -1" style="color:#9a633b" @click="deleteOnline(record.onlineUser.id)">
               清理<a-icon type="delete"/>
             </a>
           </span>
@@ -131,8 +131,7 @@ export default {
     },
     listOnlineUsers(params = {}) {
       this.loading = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/online/list", params)
+      this.$axios.post("/online/list", params)
         .then(response => {
           const pagination = { ...this.pagination };
           pagination.total = response.data.data.totalCount;
@@ -158,8 +157,7 @@ export default {
     },
     offlineUser(id) {
       if (confirm("确定下线用户吗?")) {
-        this.axios
-          .post(this.CONFIG.apiUrl + "/online/off", { id: id })
+        this.$axios.post("/online/off", { id: id })
           .then(response => {
             alert(response.data.message);
             this.listOnlineUsers({
@@ -173,8 +171,7 @@ export default {
     },
     deleteOnline(id) {
       if (confirm("注意: 清理功能只是清理系统中在线用户的记录\n用户并不会下线,如果需要下线用户请使用下线功能!!!\n确定清理此在线用户吗?")) {
-        this.axios
-          .post(this.CONFIG.apiUrl + "/online/delete", { id: id })
+        this.$axios.post("/online/delete", { id: id })
           .then(response => {
             alert(response.data.message);
             this.listOnlineUsers({
@@ -194,38 +191,4 @@ export default {
 </script>
 
 <style>
-.ant-advanced-search-form {
-  padding: 24px;
-  background: #fbfbfb;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-}
-
-.ant-advanced-search-form .ant-form-item {
-  display: flex;
-}
-
-.ant-advanced-search-form .ant-form-item-control-wrapper {
-  flex: 1;
-}
-
-#components-form-demo-advanced-search .ant-form {
-  max-width: none;
-}
-#components-form-demo-advanced-search .search-result-list {
-  margin-top: 16px;
-  border: 1px dashed #e9e9e9;
-  border-radius: 6px;
-  background-color: #fafafa;
-  min-height: 200px;
-  text-align: center;
-  padding-top: 80px;
-}
-
-#components-layout-demo-side .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-}
-
 </style>

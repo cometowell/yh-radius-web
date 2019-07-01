@@ -44,7 +44,7 @@
       <div style="height:39px">
         <template>
           <div>
-            <a-button v-if="$store.getters.getButtonIds.indexOf(441) != -1" type="primary" @click="show()">
+            <a-button v-if="$store.getters.permissionGetter.indexOf(441) != -1" type="primary" @click="show()">
               <a-icon type="plus"/>添加角色信息
             </a-button>
             <a-modal
@@ -113,7 +113,7 @@
           />
         </template>
       </a-modal>
-      <a-table
+      <a-table class="tableClass"
         :columns="columns"
         :dataSource="data"
         :pagination="pagination"
@@ -123,19 +123,19 @@
       >
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(443) != -1" @click="modifyRole(record.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(443) != -1" @click="modifyRole(record.id)">
               <a-icon type="edit"/>修改
             </a>
           </span>
           <a-divider type="vertical"/>
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(445) != -1" @click="empower(record.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(445) != -1" @click="empower(record.id)">
               <a-icon type="link"/>赋权
             </a>
           </span>
           <a-divider type="vertical"/>
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(444) != -1" style="color:#da6868" @click="deleteRole(record.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(444) != -1" style="color:#da6868" @click="deleteRole(record.id)">
               <a-icon type="delete"/>删除
             </a>
           </span>
@@ -188,8 +188,7 @@ export default {
   methods: {
     listRoles(params = {}) {
       this.loading = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/role/list", params)
+      this.$axios.post("/role/list", params)
         .then(response => {
           const pagination = { ...this.pagination };
           pagination.total = response.data.data.totalCount;
@@ -225,8 +224,7 @@ export default {
     },
     modifyRole(id) {
       this.isUpdate = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/role/info", { id: id })
+      this.$axios.post("/role/info", { id: id })
         .then(response => {
           this.visible = true;
           var data = response.data.data;
@@ -253,14 +251,13 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          var url = this.CONFIG.apiUrl + "/role/add";
+          var url = "/role/add";
           if (this.isUpdate) {
             values["id"] = this.id;
             this.visible = false;
-            url = this.CONFIG.apiUrl + "/role/update";
+            url = "/role/update";
           }
-          this.axios
-            .post(url, values)
+          this.$axios.post(url, values)
             .then(response => {
               alert(response.data.message);
               if (response.data.code == 1) {
@@ -279,8 +276,7 @@ export default {
     },
     deleteRole(id) {
       if (confirm("确认删除此角色吗?")) {
-        this.axios
-          .post(this.CONFIG.apiUrl + "/role/delete", { id: id })
+        this.$axios.post("/role/delete", { id: id })
           .then(response => {
             alert(response.data.message);
             this.listRoles({
@@ -296,8 +292,7 @@ export default {
       this.defaultCheckedKeyList = [];
       this.treeData = [];
       this.empowerVisible = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/role/resources", { id: id })
+      this.$axios.post("/role/resources", { id: id })
         .then(response => {
           var resList = response.data.data;
           resList.forEach(element => {
@@ -381,7 +376,7 @@ export default {
       this.checkedKeys.forEach(val => {
         values.push({roleId: this.currentRoleId, resourceId: val});
       });
-      this.axios.post(this.CONFIG.apiUrl + "/role/empower/" + this.currentRoleId, values)
+      this.$axios.post("/role/empower/" + this.currentRoleId, values)
         .then(response => {
           alert(response.data.message);
           this.empowerVisible = false;

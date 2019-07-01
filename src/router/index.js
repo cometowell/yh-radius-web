@@ -32,7 +32,7 @@ export default new Router({
         meta: {
           requireAuth: true
         },
-        component: () => import('@/views/user/UserAdd.vue')
+        component: () => import('@/views/user/UserAdd')
       },
       {
         path: '/user/modify',
@@ -40,7 +40,7 @@ export default new Router({
         meta: {
           requireAuth: true
         },
-        component: () => import('@/views/user/UserModify.vue')
+        component: () => import('@/views/user/UserModify')
       },
       {
         path: '/product',
@@ -48,7 +48,55 @@ export default new Router({
         meta: {
           requireAuth: true
         },
-        component: () => import('@/views/product/Product.vue')
+        component: () => import('@/views/product/Product')
+      },
+      {
+        path: '/online',
+        name: 'online',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/online/Online')
+      },
+      {
+        path: '/nas',
+        name: 'nas',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/nas/Nas')
+      },
+      {
+        path: '/sysUser',
+        name: 'systemUser',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/sysUser/User')
+      },
+      {
+        path: '/department',
+        name: 'department',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/department/Department')
+      },
+      {
+        path: '/resource',
+        name: 'resource',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/res/Resource')
+      },
+      {
+        path: '/role',
+        name: 'role',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/role/Role')
       }]
     }
   ]

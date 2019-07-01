@@ -1,8 +1,8 @@
 <template>
   <a-layout-content style="margin: 0 16px;">
     <a-breadcrumb style="margin: 16px 0">
-      <a-breadcrumb-item>部门管理</a-breadcrumb-item>
-      <a-breadcrumb-item>部门列表</a-breadcrumb-item>
+      <a-breadcrumb-item>NAS管理</a-breadcrumb-item>
+      <a-breadcrumb-item>NAS列表</a-breadcrumb-item>
     </a-breadcrumb>
     <div :class="'content-div'">
       <div style="margin-bottom: 10px">
@@ -10,34 +10,38 @@
           <a-form class="ant-advanced-search-form" :form="search">
             <a-row :gutter="24">
               <a-col :span="6" :style="{ display:'block'}">
-                <a-form-item :label="'部门名称'">
+                <a-form-item :label="'NAS名称'">
                   <a-input
                     v-decorator="[
                 'name'
               ]"
-                    placeholder="部门名称搜索"
+                    placeholder="NAS名称模糊搜索"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="6" :style="{ display:'block'}">
-                <a-form-item :label="'编码'">
+                <a-form-item :label="'IP地址'">
                   <a-input
                     v-decorator="[
-                'code'
+                'ipAddr'
               ]"
-                    placeholder="根据编码搜索"
+                    placeholder="IP地址搜索"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="6" :style="{ display:'block'}">
-                <a-form-item :label="'上级部门'">
+                <a-form-item :label="'厂商'">
                   <a-select
                     v-decorator="[
-                                    'parentId',
+                                    'vendorId',
                                     ]"
-                    placeholder="根据上级部门搜索"
+                    placeholder="请选择厂商"
                   >
-                  <a-select-option v-for="d in departments" :key="d.id" :value="d.id" :disabled = "d.status == 2">{{d.name}}</a-select-option>
+                    <a-select-option :value="1">标准</a-select-option>
+                    <a-select-option :value="9">思科</a-select-option>
+                    <a-select-option :value="2011">华为</a-select-option>
+                    <a-select-option :value="3902">中兴</a-select-option>
+                    <a-select-option :value="14988">MikroTik</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -56,56 +60,68 @@
       <div style="height:39px">
         <template>
           <div>
-            <a-button v-if="$store.getters.getButtonIds.indexOf(431) != -1" type="primary" @click="show()">
-              <a-icon type="plus"/>添加部门信息
+            <a-button v-if="$store.getters.permissionGetter.indexOf(421) != -1" type="primary" @click="show()">
+              <a-icon type="plus"/>添加NAS信息
             </a-button>
             <a-modal
-              :title="isUpdate ? '修改部门信息' : '增加部门'"
+              :title="isUpdate ? '修改NAS信息' : '增加NAS'"
               :maskClosable="false"
               v-model="visible"
               :footer="null"
             >
               <template>
                 <a-form :form="form" @submit="handleSubmit">
-                  <a-form-item label="编码" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                    <a-input :disabled="isUpdate"
-                      v-decorator="[
-                                    'code',
-                                    {rules: [{ required: true, message: '请输入部门编码!' }]}
-                                    ]"
-                    />
-                  </a-form-item>
-                  <a-form-item label="部门名称" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-form-item label="NAS名称" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
                     <a-input
                       v-decorator="[
                                     'name',
-                                    {rules: [{ required: !isUpdate, message: '请输入部门名称!' }]}
+                                    {rules: [{ required: true, message: '请输入NAS名称!' }]}
                                     ]"
                     />
                   </a-form-item>
                   <a-form-item
-                    label="上级部门"
+                    v-if="isUpdate"
+                    label="厂商"
                     :label-col="{ span: 5 }"
                     :wrapper-col="{ span: 12 }"
                   >
                     <a-select
-                      v-decorator="['parentId']" placeholder="选填，选择上级部门!">
-                      <a-select-option :value="0">无上级部门</a-select-option>
-                      <template v-for="d in departments">
-                        <a-select-option v-if="id != d.id" :key="d.id" :disabled="d.status == 2" :value="d.id">{{d.name}}</a-select-option>
-                      </template>
+                      v-decorator="[
+                                    'vendorId',
+                                    {rules: [{ required: true, message: '请选择NAS厂商!' }]}]"
+                      placeholder="请选择NAS厂商"
+                    >
+                      <a-select-option :value="1">标准</a-select-option>
+                      <a-select-option :value="9">思科</a-select-option>
+                      <a-select-option :value="2011">华为</a-select-option>
+                      <a-select-option :value="3902">中兴</a-select-option>
+                      <a-select-option :value="14988">MikroTik</a-select-option>
                     </a-select>
                   </a-form-item>
-                  <a-form-item v-if="isUpdate"
-                    label="状态"
-                    :label-col="{ span: 5 }"
-                    :wrapper-col="{ span: 12 }"
-                  >
-                    <a-select
-                      v-decorator="['status']" placeholder="选择状态!">
-                      <a-select-option :value="1">正常</a-select-option>
-                      <a-select-option :value="2">停用</a-select-option>
-                    </a-select>
+                  <a-form-item label="IP地址" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                    <a-input
+                      v-decorator="[
+                                    'ipAddr',
+                                    {rules: [{ required: true, message: '请输入NAS IP地址!' }]}
+                                    ]"
+                    />
+                  </a-form-item>
+                  <a-form-item label="秘钥" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                    <a-input
+                      v-decorator="[
+                                    'secret',
+                                    {rules: [{ required: true, message: '请输入认证秘钥!' }]}
+                                    ]"
+                    />
+                  </a-form-item>
+                  <a-form-item label="授权端口" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                    <a-input
+                      v-decorator="[
+                                    'authorizePort',
+                                    {rules: [{ required: true, message: '请输入授权端口!' }], initialValue: 3799}
+                                    ]"
+                      placeholder="请输入授权端口"
+                    />
                   </a-form-item>
                   <a-form-item label="描述信息" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
                     <a-textarea
@@ -124,23 +140,24 @@
           </div>
         </template>
       </div>
-      <a-table
+      <a-table class="tableClass"
         :columns="columns"
         :dataSource="data"
         :pagination="pagination"
-        :scroll="{ x: 960}"
-        :rowKey="record => record.department.id"
+        :scroll="{ x: 980}"
+        :rowKey="record => record.id"
+        @change="searchNasByParams"
       >
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(432) != -1" @click="modifyDepartment(record.department.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(422) != -1" @click="modifyNas(record.id)">
               <a-icon type="edit"/>修改
             </a>
           </span>
           <a-divider type="vertical"/>
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(433) != -1" style="color:#da6868" @click="deleteDepartment(record.department.id)">
-              <a-icon type="delete"/>停用
+            <a v-if="$store.getters.permissionGetter.indexOf(423) != -1" style="color:#da6868" @click="deleteNas(record.id)">
+              <a-icon type="delete"/>删除
             </a>
           </span>
         </span>
@@ -151,19 +168,27 @@
 <script>
 import lodash from "lodash";
 const pageInit = { page: 1, pageSize: 10 };
-
+const vendorTypeObj = {
+  1: "标准",
+  9: "思科",
+  2011: "华为",
+  3902: "中兴",
+  14988: "MikroTik"
+};
 const columns = [
-  { title: "名称", dataIndex: "department.name", key: "name" },
-  { title: "编码", dataIndex: "department.code", key: "code"},
-  { title: "上级部门", dataIndex: "name", key: "parentName" },
-  { title: "状态", dataIndex: "department.status", key: "status",
+  { title: "名称", dataIndex: "name", key: "name" },
+  {
+    title: "厂商",
+    dataIndex: "vendorId",
+    key: "vendorId",
     customRender: text => {
-      return text == 1 ? "正常" : "停用";
+      return vendorTypeObj[text];
     }
   },
-  { title: "创建时间", dataIndex: "department.createTime", key: "createTime" },
-  { title: "最近修改时间", dataIndex: "department.updateTime", key: "updateTime" },
-  { title: "描述", dataIndex: "department.description", key: "description" },
+  { title: "IP地址", dataIndex: "ipAddr", key: "ipAddr" },
+  { title: "秘钥", dataIndex: "secret", key: "secret" },
+  { title: "授权端口", dataIndex: "authorizePort", key: "authorizePort" },
+  { title: "描述", dataIndex: "description", key: "description" },
   {
     title: "操作",
     key: "operator",
@@ -178,7 +203,6 @@ export default {
     return {
       data: [],
       visible: false,
-      departments:[],
       pagination: { showTotal: this.showTotal },
       loading: false,
       columns,
@@ -186,18 +210,18 @@ export default {
       form: this.$form.createForm(this),
       search: this.$form.createForm(this),
       isUpdate: false,
-      id: 0
+      id:0,
     };
   },
   methods: {
     resetSearch() {
       this.search.resetFields();
-      this.listDepartment({ page: pageInit });
+      this.listNas({ page: pageInit });
     },
     searchFunc(e) {
       e.preventDefault();
       this.search.validateFields((_, values) => {
-        this.listDepartment({ page: pageInit, ...values });
+        this.listNas({ page: pageInit, ...values });
       });
     },
     showTotal(total) {
@@ -208,10 +232,9 @@ export default {
       this.isUpdate = false;
       this.form.resetFields();
     },
-    listDepartment(params = {}) {
+    listNas(params = {}) {
       this.loading = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/department/list", params)
+      this.$axios.post("/nas/list", params)
         .then(response => {
           const pagination = { ...this.pagination };
           pagination.total = response.data.data.totalCount;
@@ -222,12 +245,12 @@ export default {
           this.pagination = pagination;
         });
     },
-    searchDepartmentByParams(pagination) {
+    searchNasByParams(pagination) {
       var values = this.search.getFieldsValue();
       const pager = { ...this.pagination };
       pager.current = pagination.current;
       this.pagination = pager;
-      this.listDepartment({
+      this.listNas({
         page: {
           pageSize: pagination.pageSize,
           page: pagination.current
@@ -235,10 +258,9 @@ export default {
         ...values
       });
     },
-    modifyDepartment(id) {
+    modifyNas(id) {
       this.isUpdate = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/department/info", { id: id })
+      this.$axios.post("/nas/info", { id: id })
         .then(response => {
           this.visible = true;
           var data = response.data.data;
@@ -257,22 +279,20 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          var url = this.CONFIG.apiUrl + "/department/add";
+          var url = "/nas/add";
           if (this.isUpdate) {
             values["id"] = this.id;
             this.visible = false;
-            url = this.CONFIG.apiUrl + "/department/update";
+            url = "/nas/update";
           }
-          this.axios
-            .post(url, values)
+          this.$axios.post(url, values)
             .then(response => {
               alert(response.data.message);
               if(response.data.code == 1) {
                 return;
               }
               this.visible = false;
-              this.fetchDepartment();
-              this.listDepartment({
+              this.listNas({
                 page: pageInit
               });
             })
@@ -282,13 +302,12 @@ export default {
         }
       });
     },
-    deleteDepartment(id) {
-      if (confirm("确认停用此部门信息吗?")) {
-        this.axios
-          .post(this.CONFIG.apiUrl + "/department/delete", { id: id })
+    deleteNas(id) {
+      if (confirm("确认删除此NAS信息吗?")) {
+        this.$axios.post("/nas/delete", { id: id })
           .then(response => {
             alert(response.data.message);
-            this.listDepartment({
+            this.listNas({
               page: pageInit
             });
           })
@@ -296,18 +315,10 @@ export default {
             console.log(error);
           });
       }
-    },
-    fetchDepartment() {
-      this.axios
-          .post(this.CONFIG.apiUrl + "/fetch/department", {})
-          .then(response => {
-            this.departments = response.data.data;
-          })
     }
   },
   mounted() {
-    this.listDepartment({ page: pageInit });
-    this.fetchDepartment();
+    this.listNas({ page: pageInit });
   }
 };
 </script>

@@ -60,7 +60,7 @@
       <div style="height:39px">
         <template>
           <div>
-            <a-button v-if="$store.getters.getButtonIds.indexOf(411) != -1" type="primary" @click="show()">
+            <a-button v-if="$store.getters.permissionGetter.indexOf(411) != -1" type="primary" @click="show()">
               <a-icon type="plus"/>添加管理员信息
             </a-button>
             <a-modal
@@ -164,7 +164,7 @@
           </div>
         </template>
       </div>
-      <a-table
+      <a-table class="tableClass"
         :columns="columns"
         :dataSource="data"
         :pagination="pagination"
@@ -174,13 +174,13 @@
       >
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(412) != -1" @click="modifyManager(record.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(412) != -1" @click="modifyManager(record.id)">
               <a-icon type="edit"/>修改
             </a>
           </span>
           <a-divider type="vertical"/>
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(413) != -1" style="color:#da6868" @click="deleteManager(record.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(413) != -1" style="color:#da6868" @click="deleteManager(record.id)">
               <a-icon type="delete"/>删除
             </a>
           </span>
@@ -269,8 +269,7 @@ export default {
     },
     modifyManager(id) {
       this.isUpdate = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/manager/info", { id: id })
+      this.$axios.post("/system/user/info", { id: id })
         .then(response => {
           this.visible = true;
           var data = response.data.data;
@@ -287,8 +286,7 @@ export default {
     },
     deleteManager(id) {
       if (confirm("确认删除此管理员信息吗?")) {
-        this.axios
-          .post(this.CONFIG.apiUrl + "/manager/delete", { id: id })
+        this.$axios.post("/system/user/delete", { id: id })
           .then(response => {
             alert(response.data.message);
             this.fetchManager({
@@ -316,8 +314,7 @@ export default {
     },
     fetchManager(params = {}) {
       this.loading = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/manager/list", params)
+      this.$axios.post("/system/user/list", params)
         .then(response => {
           const pagination = { ...this.pagination };
           pagination.total = response.data.data.totalCount;
@@ -331,8 +328,7 @@ export default {
     // 修改管理员信息
     handleUpdate(values) {
       values["id"] = this.id;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/manager/update", values)
+      this.$axios.post("/system/user/update", values)
         .then(response => {
           alert(response.data.message);
           if(response.data.code == 1) {
@@ -346,8 +342,7 @@ export default {
     },
     getDepartments() {
       // 获取部门列表
-      this.axios
-        .post(this.CONFIG.apiUrl + "/fetch/department", {})
+      this.$axios.post("/fetch/department", {})
         .then(response => {
           this.departments = response.data.data;
         });
@@ -363,8 +358,7 @@ export default {
             this.visible = false;
             return;
           }
-          this.axios
-            .post(this.CONFIG.apiUrl + "/manager/add", values)
+          this.$axios.post("/system/user/add", values)
             .then(response => {
               alert(response.data.message);
               if(response.data.code == 1) {
