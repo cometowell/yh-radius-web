@@ -48,7 +48,7 @@
               <a-col :span="6" :style="{ textAlign: 'left' }">
                 <a-button type="primary" icon="search" @click="searchUserFunc">搜 索</a-button>
                 <a-button
-                  :style="{ marginLeft: '8px', backgroundColor:'#ffca7e', color:'white' }"
+                  :style="{ marginLeft: '8px'}"
                   icon="reload"
                   @click="resetSearch"
                 >重 置</a-button>
@@ -60,7 +60,7 @@
       <div style="margin-bottom: 10px">
         <div style="height:39px">
           <div>
-            <a-button v-if="$store.getters.getButtonIds.indexOf(110) != -1" type="primary" @click="addUser">
+            <a-button v-if="$store.getters.permissionGetter.indexOf(110) != -1" type="primary" @click="addUser">
               <a-icon type="plus"/>添加用户信息
             </a-button>
           </div>
@@ -172,7 +172,7 @@
           </a-drawer>
         </div>
       </template>
-      <a-table
+      <a-table class="tableClass"
         :columns="columns"
         :dataSource="data"
         :pagination="pagination"
@@ -188,19 +188,19 @@
         </template>
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(150) != -1" href="javascript:;" @click="userContinue(record.radUser)">
+            <a v-if="$store.getters.permissionGetter.indexOf(150) != -1" href="javascript:;" @click="userContinue(record.radUser)">
               <a-icon type="select" /> 续订
             </a>
           </span>
           <a-divider type="vertical"/>
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(120) != -1" href="javascript:;" @click="modifyUser(record.radUser.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(120) != -1" href="javascript:;" @click="modifyUser(record.radUser.id)">
               <a-icon type="edit"/> 修改
             </a>
           </span>
           <a-divider type="vertical"/>
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(130) != -1" style="color:#da6868" @click="deleteUser(record.radUser.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(130) != -1" style="color:#da6868" @click="deleteUser(record.radUser.id)">
               <a-icon type="delete"/> 删除
             </a>
           </span>
@@ -211,27 +211,8 @@
 </template>
 <script>
 import lodash from "lodash";
+import userConstant from './userConstant'
 const pageInit = { page: 1, pageSize: 10 };
-const userStateList = [
-  { key: 1, value: "正常" },
-  { key: 2, value: "停机" },
-  { key: 3, value: "禁用" },
-  { key: 4, value: "销户" }
-];
-
-const userStates = {
-  1: "正常",
-  2: "停机",
-  3: "禁用",
-  4: "销户",
-};
-
-const productTypes = {
-  1: "包月",
-  2: "自由时长",
-  3: "流量"
-}
-
 const columns = [
   { title: "姓名", dataIndex: "radUser.realName", key: "realName" },
   { title: "用户名", key: "username" ,
@@ -239,7 +220,7 @@ const columns = [
   },
   { title: "套餐", dataIndex: "radProduct.name", key: "productName",
     customRender: (text,record) => {
-      return text + "(" + productTypes[record.radProduct.type] +")";
+      return text + "(" + userConstant.productTypes[record.radProduct.type] +")";
     }
   },
   {
@@ -275,10 +256,10 @@ export default {
       placement: "right",
       pagination: { showTotal: this.showTotal },
       loading: false,
-      productTypes,
+      productTypes: userConstant.productTypes,
       columns,
-      userStateList,
-      userStates,
+      userStateList: userConstant.userStateList,
+      userStates: userConstant.userStates,
       formLayout: "horizontal",
       search: this.$form.createForm(this),
       continueForm: this.$form.createForm(this),
@@ -304,8 +285,8 @@ export default {
       this.productType = option.data.attrs.type;
     },
     fetchProducts() {
-      this.axios
-        .post(this.CONFIG.apiUrl + "/fetch/product", {})
+      this.$axios
+        .post("/fetch/product", {})
         .then(response => {
           this.products = response.data.data;
         });
@@ -316,7 +297,7 @@ export default {
          values.id = parseInt(values.id);
          values.count = parseInt(values.count);
          values.beContinue = true;
-         this.axios.post(this.CONFIG.apiUrl + "/user/continue", values).then(response => {
+         this.$axios.post("/user/continue", values).then(response => {
              alert(response.data.message);
              this.continueVisible = false;
              this.fetchUser({page: pageInit});
@@ -373,8 +354,8 @@ export default {
     },
     deleteUser(id) {
       if (confirm("确认删除此用户信息吗?")) {
-        this.axios
-          .post(this.CONFIG.apiUrl + "/user/delete", { id: id })
+        this.$axios
+          .post("/user/delete", { id: id })
           .then(response => {
             alert(response.data.message);
             this.fetchUser({
@@ -402,9 +383,7 @@ export default {
     },
     fetchUser(params = {}) {
       this.loading = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/user/list", params)
-        .then(response => {
+      this.$axios.post("/user/list", params).then(response => {
           const pagination = { ...this.pagination };
           pagination.total = response.data.data.totalCount;
           pagination.pageSize = response.data.data.size;
@@ -417,9 +396,7 @@ export default {
     // 修改用户信息
     handleUpdate(values) {
       values["id"] = this.id;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/user/update", values)
-        .then(response => {
+      this.$axios.post("/user/update", values).then(response => {
           alert(response.data.message);
           this.fetchUser({
             page: pageInit
@@ -427,7 +404,6 @@ export default {
         });
       this.id = 0;
     },
-    
     addUser() {
       this.$router.push('/user/add');
     },
@@ -441,8 +417,8 @@ export default {
             this.visible = false;
             return;
           }
-          this.axios
-            .post(this.CONFIG.apiUrl + "/manager/add", values)
+          this.$axios
+            .post("/manager/add", values)
             .then(response => {
               alert(response.data.message);
               this.visible = false;
@@ -464,43 +440,6 @@ export default {
 </script>
 
 <style>
-.ant-advanced-search-form {
-  padding: 24px;
-  background: #fbfbfb;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-}
-
-.ant-advanced-search-form .ant-form-item {
-  display: flex;
-}
-
-.ant-advanced-search-form .ant-form-item-control-wrapper {
-  flex: 1;
-}
-
-#components-form-demo-advanced-search .ant-form {
-  max-width: none;
-}
-
-#components-layout-demo-side .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-}
-
-.title-name {
-  color: #90a0af;
-  display: block;
-  height: 32px;
-  text-align: center;
-  padding-top: 5px;
-}
-
-.float-right {
-  float: right;
-}
-
 .user-grid-25 {
   width:25%;
   text-align:center;

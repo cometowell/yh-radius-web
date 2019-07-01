@@ -274,21 +274,4 @@ export default {
   padding-top: 80px;
 }
 
-#components-layout-demo-side .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-}
-
-.title-name {
-  color: #90a0af;
-  display: block;
-  height: 32px;
-  text-align: center;
-  padding-top: 5px;
-}
-
-.float-right {
-  float: right;
-}
 </style>

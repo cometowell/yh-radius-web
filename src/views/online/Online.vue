@@ -228,15 +228,4 @@ export default {
   margin: 16px;
 }
 
-.title-name {
-  color: #90a0af;
-  display: block;
-  height: 32px;
-  text-align: center;
-  padding-top: 5px;
-}
-
-.float-right {
-  float: right;
-}
 </style>

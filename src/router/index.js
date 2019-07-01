@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  mode: "history",
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -17,7 +17,30 @@ export default new Router({
       children: [{
         path: '',
         name: 'index',
+        requireAuth: true,
         component: () => import('@/views/index/Index')
+      },
+      {
+        path: '/user',
+        name: 'user',
+        requireAuth: true,
+        component: () => import('@/views/user/User')
+      },
+      {
+        path: '/user/add',
+        name: 'userAdd',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/user/UserAdd.vue')
+      },
+      {
+        path: '/user/modify',
+        name: 'userModify',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/user/UserModify.vue')
       }]
     }
   ]

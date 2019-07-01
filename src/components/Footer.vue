@@ -1,13 +1,20 @@
 <template>
-  <a-layout-footer :style="{textAlign: 'center', position:'fixed',bottom:'0px', width:'100%', padding: '10px 50px'}">Go-Radius is a simple manager Server by go-rad</go-rad></a-layout-footer>
+  <a-layout-footer class="footerClass">Go-Radius is a simple manager Server by go-radius</a-layout-footer>
 </template>
 
 <script>
 export default {
-    name: "pageFooter"
-}
+  name: "pageFooter"
+};
 </script>
 
 <style scoped>
-
+.footerClass {
+  text-align: center;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  padding: 10px 50px;
+  background-color: #f0f2f5
+}
 </style>
