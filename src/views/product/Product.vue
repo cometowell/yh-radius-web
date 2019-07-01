@@ -61,13 +61,13 @@
       <div style="margin-bottom: 10px">
         <div style="height:39px">
           <div>
-            <a-button v-if="$store.getters.getButtonIds.indexOf(210) != -1" type="primary" @click="addProduct">
+            <a-button v-if="$store.getters.permissionGetter.indexOf(210) != -1" type="primary" @click="addProduct">
               <a-icon type="plus"/>添加套餐
             </a-button>
           </div>
         </div>
       </div>
-      <a-table
+      <a-table class="tableClass"
         :columns="columns"
         :dataSource="data"
         :pagination="pagination"
@@ -77,13 +77,13 @@
       >
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(230) != -1" @click="modifyProduct(record.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(230) != -1" @click="modifyProduct(record.id)">
               <a-icon type="edit"/>修改
             </a>
           </span>
           <a-divider type="vertical"/>
           <span>
-            <a v-if="$store.getters.getButtonIds.indexOf(240) != -1" style="color:#da6868" @click="deleteProduct(record.id)">
+            <a v-if="$store.getters.permissionGetter.indexOf(240) != -1" style="color:#da6868" @click="deleteProduct(record.id)">
               <a-icon type="delete"/>停用
             </a>
           </span>
@@ -197,8 +197,7 @@ export default {
     },
     deleteProduct(id) {
       if (confirm("确认停用此套餐信息吗?")) {
-        this.axios
-          .post(this.CONFIG.apiUrl + "/product/delete", { id: id })
+        this.$axios.post("/product/delete", { id: id })
           .then(response => {
             alert(response.data.message);
             this.listProducts({
@@ -226,8 +225,7 @@ export default {
     },
     listProducts(params = {}) {
       this.loading = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/product/list", params)
+      this.$axios.post("/product/list", params)
         .then(response => {
           const pagination = { ...this.pagination };
           pagination.total = response.data.data.totalCount;
@@ -246,32 +244,4 @@ export default {
 </script>
 
 <style>
-.ant-advanced-search-form {
-  padding: 24px;
-  background: #fbfbfb;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
-}
-
-.ant-advanced-search-form .ant-form-item {
-  display: flex;
-}
-
-.ant-advanced-search-form .ant-form-item-control-wrapper {
-  flex: 1;
-}
-
-#components-form-demo-advanced-search .ant-form {
-  max-width: none;
-}
-#components-form-demo-advanced-search .search-result-list {
-  margin-top: 16px;
-  border: 1px dashed #e9e9e9;
-  border-radius: 6px;
-  background-color: #fafafa;
-  min-height: 200px;
-  text-align: center;
-  padding-top: 80px;
-}
-
 </style>

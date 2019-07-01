@@ -121,19 +121,26 @@ export default {
       }
     },
     mounted() {
-      this.axios.post(this.CONFIG.apiUrl + "/user/order/record",{
+      this.$axios.post("/user/order/record",{
           id: this.userInfo.radUser.id
         }).then(response => {
-            this.listData = response.data.data;
+          var result = response.data.data;
+          if(result == null) {
+            result = [];
+          }
+          this.listData = result;
         });
     },
     watch: {
       userId(value) {
-        console.log(value);
-        this.axios.post(this.CONFIG.apiUrl + "/user/order/record",{
+        this.$axios.post("/user/order/record",{
           id: value
         }).then(response => {
-            this.listData = response.data.data;
+          var result = response.data.data;
+          if(result == null) {
+            result = [];
+          }
+          this.listData = result;
         });
       }
     },

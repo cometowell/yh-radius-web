@@ -41,6 +41,14 @@ export default new Router({
           requireAuth: true
         },
         component: () => import('@/views/user/UserModify.vue')
+      },
+      {
+        path: '/product',
+        name: 'product',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/product/Product.vue')
       }]
     }
   ]

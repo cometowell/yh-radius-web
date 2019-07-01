@@ -148,8 +148,7 @@ export default {
   },
   methods: {
     fetchProducts() {
-      this.axios
-        .post(this.CONFIG.apiUrl + "/fetch/product", {})
+      this.$axios.post("/fetch/product", {})
         .then(response => {
           this.products = response.data.data;
         });
@@ -164,8 +163,7 @@ export default {
         }
         if (!err) {
           values["count"] = parseInt(values["count"]);
-          this.axios
-            .post(this.CONFIG.apiUrl + "/user/add", values)
+          this.$axios.post("/user/add", values)
             .then(response => {
               alert(response.data.message);
               if(response.data.code == 1) {
