@@ -4,7 +4,7 @@
       <a-breadcrumb-item>套餐管理</a-breadcrumb-item>
       <a-breadcrumb-item>修改套餐</a-breadcrumb-item>
     </a-breadcrumb>
-    <div :class="'content-div'">
+    <div class="content-div">
       <a-form :form="form" :style="{width:'800px', margin:'auto auto'}" @submit="handleUpdate">
         <a-form-item label="套餐名称" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input

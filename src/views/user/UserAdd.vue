@@ -4,7 +4,7 @@
       <a-breadcrumb-item>用户管理</a-breadcrumb-item>
       <a-breadcrumb-item>添加用户</a-breadcrumb-item>
     </a-breadcrumb>
-    <div :class="'content-div'">
+    <div class="content-div">
       <a-form :form="form" :style="{width:'800px', margin:'auto auto'}" @submit="handleSubmit">
         <a-form-item label="用户名" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input

@@ -4,7 +4,7 @@
       <a-breadcrumb-item>角色管理</a-breadcrumb-item>
       <a-breadcrumb-item>角色列表</a-breadcrumb-item>
     </a-breadcrumb>
-    <div :class="'content-div'">
+    <div class="content-div">
       <div style="margin-bottom: 10px">
         <template>
           <a-form class="ant-advanced-search-form" :form="search">

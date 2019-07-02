@@ -4,7 +4,7 @@
       <a-breadcrumb-item>菜单管理</a-breadcrumb-item>
       <a-breadcrumb-item>菜单列表</a-breadcrumb-item>
     </a-breadcrumb>
-    <div :class="'content-div'">
+    <div class="content-div">
       <a-table
         :columns="columns"
         :dataSource="data"
