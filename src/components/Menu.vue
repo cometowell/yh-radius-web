@@ -1,5 +1,5 @@
 <template>
-    <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }" collapsible v-model="collapsed">
+    <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
       <div class="logo" @click="$router.push('/index')"/>
       <a-menu mode="inline" theme="dark" :openKeys="openKeys" @openChange="onOpenChange">
         <template v-for="menu in menus">
@@ -24,7 +24,6 @@ export default {
   data() {
     return {
       menus: [],
-      collapsed: false,
       rootSubmenuKeys: [],
       openKeys: []
     };
