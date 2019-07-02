@@ -149,6 +149,7 @@ import lodash from "lodash";
 const pageInit = { page: 1, pageSize: 10 };
 
 const columns = [
+  { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "名称", dataIndex: "name", key: "name" },
   { title: "编码", dataIndex: "code", key: "code" },
   { title: "创建时间", dataIndex: "createTime", key: "createTime" },

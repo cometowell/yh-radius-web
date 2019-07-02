@@ -111,6 +111,7 @@ const productTypes = {
 };
 
 const columns = [
+  { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "套餐名", dataIndex: "name", key: "name" },
   { title: "类型", dataIndex: "type", key: "type",
     customRender: text => {

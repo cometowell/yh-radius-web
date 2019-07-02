@@ -153,6 +153,7 @@ import lodash from "lodash";
 const pageInit = { page: 1, pageSize: 10 };
 
 const columns = [
+  { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "名称", dataIndex: "department.name", key: "name" },
   { title: "编码", dataIndex: "department.code", key: "code"},
   { title: "上级部门", dataIndex: "name", key: "parentName" },

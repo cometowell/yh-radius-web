@@ -176,6 +176,7 @@ const vendorTypeObj = {
   14988: "MikroTik"
 };
 const columns = [
+  { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "名称", dataIndex: "name", key: "name" },
   {
     title: "厂商",

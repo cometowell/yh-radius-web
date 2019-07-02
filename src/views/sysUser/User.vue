@@ -207,6 +207,7 @@ const managerStates = {
 };
 
 const columns = [
+  { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "姓名", dataIndex: "realName", key: "realName" },
   { title: "用户名", dataIndex: "username", key: "username" },
   {

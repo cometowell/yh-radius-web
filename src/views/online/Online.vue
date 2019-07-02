@@ -84,6 +84,7 @@
 <script>
 const pageInit = { page: 1, pageSize: 10 };
 const columns = [
+  { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "用户姓名", dataIndex: "radUser.realName", key: "realName" },
   { title: "账号", dataIndex: "onlineUser.username", key: "username" },
   { title: "IP地址", dataIndex: "onlineUser.ipAddr", key: "ipAddr" },

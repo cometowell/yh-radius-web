@@ -214,6 +214,7 @@ import lodash from "lodash";
 import userConstant from './userConstant'
 const pageInit = { page: 1, pageSize: 10 };
 const columns = [
+  { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "姓名", dataIndex: "radUser.realName", key: "realName" },
   { title: "用户名", key: "username" ,
     scopedSlots: { customRender: 'username' }
