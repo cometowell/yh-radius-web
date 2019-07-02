@@ -1,5 +1,5 @@
 <template>
-  <a-layout-footer class="footerClass">This is a simple manager Server by go-radius, The future will be better</a-layout-footer>
+  <a-layout-footer class="footerClass">This is a simple manager Server for go-radius, The future will be better</a-layout-footer>
 </template>
 
 <script>
