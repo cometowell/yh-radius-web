@@ -1,6 +1,6 @@
 <template>
     <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }" collapsible v-model="collapsed">
-      <div class="logo" />
+      <div class="logo" @click="$router.push('/index')"/>
       <a-menu mode="inline" theme="dark" :openKeys="openKeys" @openChange="onOpenChange">
         <template v-for="menu in menus">
           <a-sub-menu v-if="hasChild(menu)" :key="menu.frontKey">
