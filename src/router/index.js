@@ -21,6 +21,12 @@ export default new Router({
         component: () => import('@/views/index/Index')
       },
       {
+        path: '/about',
+        name: 'about',
+        requireAuth: true,
+        component: () => import('@/views/index/About')
+      },
+      {
         path: '/user',
         name: 'user',
         requireAuth: true,
@@ -73,6 +79,14 @@ export default new Router({
           requireAuth: true
         },
         component: () => import('@/views/sysUser/User')
+      },
+      {
+        path: '/change/password',
+        name: 'changePassword',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/sysUser/ChangePassword')
       },
       {
         path: '/department',

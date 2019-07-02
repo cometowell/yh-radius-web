@@ -21,6 +21,12 @@
             <a-icon type="key" />
           </a>
         </a-menu-item>
+        <a-menu-item>
+          <a @click="about()">
+            关于系统
+            <a-icon type="key" />
+          </a>
+        </a-menu-item>
       </a-menu>
     </a-dropdown>
   </div>
@@ -59,6 +65,9 @@ export default {
     },
     changePassword() {
       this.$router.push("/change/password");
+    },
+    about() {
+      this.$router.push('/about')
     }
   }
 };

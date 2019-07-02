@@ -4,8 +4,9 @@
       <a-breadcrumb-item>管理员管理</a-breadcrumb-item>
       <a-breadcrumb-item>修改管理员密码</a-breadcrumb-item>
     </a-breadcrumb>
-    <div :class="'content-div'">
-      <a-form :form="form" @submit="handleSubmit" :style="{width:'800px', margin:'auto auto'}">
+    <div class="panel panel-default">
+    <div class="panel-body">
+      <a-form :form="form" @submit="handleSubmit" class="password-form">
         <a-form-item label="姓名" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
             :disabled="true"
@@ -47,6 +48,7 @@
         </a-form-item>
       </a-form>
     </div>
+    </div>
   </a-layout-content>
 </template>
 
@@ -78,11 +80,10 @@ export default {
           }
 
           values.id = this.id;
-          this.axios
-            .post(this.CONFIG.apiUrl + "/manager/change/password", values)
+          this.$axios.post("/manager/change/password", values)
             .then(response => {
                 alert(response.data.message);
-                this.axios.post(this.CONFIG.apiUrl + "/logout", {});
+                this.$axios.post("/logout", {});
                 localStorage.removeItem("rad_access_token")
                 this.$router.push("/");
             })
@@ -91,8 +92,7 @@ export default {
       });
     },
     getUser() {
-      this.axios
-        .post(this.CONFIG.apiUrl + "/session/manager/info", {})
+      this.$axios.post("/system/user/session/info", {})
         .then(response => {
           var manager = response.data.data.manager;
           this.realName = manager.realName;
@@ -111,3 +111,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .password-form {
+    width: 800px;
+    margin: auto auto
+  }
+</style>

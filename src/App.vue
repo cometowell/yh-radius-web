@@ -12,6 +12,6 @@ export default {
 
 <style>
 body {
-  background-color: #dedede;
+  background-color: rgba(105, 85, 56, 0.38);
 }
 </style>
