@@ -44,7 +44,7 @@
               <a-col :span="6" :style="{ textAlign: 'left' }">
                 <a-button type="primary" icon="search" @click="searchFunc">搜 索</a-button>
                 <a-button
-                  :style="{ marginLeft: '8px', backgroundColor:'#ffca7e', color:'white' }"
+                  :style="{ marginLeft: '8px'}"
                   icon="reload"
                   @click="resetSearch"
                 >重 置</a-button>
@@ -131,6 +131,9 @@
         :scroll="{ x: 960}"
         :rowKey="record => record.department.id"
       >
+        <template slot="statusName" slot-scope="text">
+          <div :style="getStatusColor(text)">{{text == 1 ? '正常' : '停用'}}</div>
+        </template>
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
             <a v-if="$store.getters.permissionGetter.indexOf(432) != -1" @click="modifyDepartment(record.department.id)">
@@ -158,9 +161,7 @@ const columns = [
   { title: "编码", dataIndex: "department.code", key: "code"},
   { title: "上级部门", dataIndex: "name", key: "parentName" },
   { title: "状态", dataIndex: "department.status", key: "status",
-    customRender: text => {
-      return text == 1 ? "正常" : "停用";
-    }
+      scopedSlots: { customRender: "statusName" }
   },
   { title: "创建时间", dataIndex: "department.createTime", key: "createTime" },
   { title: "最近修改时间", dataIndex: "department.updateTime", key: "updateTime" },
@@ -191,6 +192,13 @@ export default {
     };
   },
   methods: {
+    getStatusColor(status) {
+      if(status == 1) {
+        return {};
+      } else {
+        return {'color':'#ce3838'};
+      }
+    },
     resetSearch() {
       this.search.resetFields();
       this.listDepartment({ page: pageInit });

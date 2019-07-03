@@ -42,7 +42,7 @@
               <a-col :span="6" :style="{ textAlign: 'left' }">
                 <a-button type="primary" icon="search" @click="searchFunc">搜 索</a-button>
                 <a-button
-                  :style="{ marginLeft: '8px', backgroundColor:'#ffca7e', color:'white' }"
+                  :style="{ marginLeft: '8px'}"
                   icon="reload"
                   @click="resetSearch"
                 >重 置</a-button>
