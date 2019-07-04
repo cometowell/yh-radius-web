@@ -55,7 +55,7 @@
             >
               <template>
                   <a-form :form="form" @submit="handleSubmit">
-                    <a-form-item label="选择片区" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                    <a-form-item label="选择片区" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
                     <a-select
                       v-decorator="[
                     'areaId',
@@ -71,7 +71,7 @@
                       >{{item.name}}</a-select-option>
                     </a-select>
                   </a-form-item>
-                  <a-form-item label="村镇/街道名称" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-form-item label="村镇/街道名称" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
                     <a-input
                       v-decorator="[
                                     'name',
@@ -79,7 +79,7 @@
                                     ]"
                     />
                   </a-form-item>
-                  <a-form-item label="code" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-form-item label="编码" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
                     <a-input
                       v-decorator="[
                                     'code',
@@ -87,7 +87,7 @@
                                     ]"
                     />
                   </a-form-item>
-                  <a-form-item label="描述信息" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                  <a-form-item label="描述信息" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
                     <a-textarea
                       v-decorator="[
                                     'description'
@@ -95,7 +95,7 @@
                       :rows="3"
                     />
                   </a-form-item>
-                  <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+                  <a-form-item :wrapper-col="{ span: 12, offset: 8 }">
                     <a-button type="primary" html-type="submit">提交</a-button>
                   </a-form-item>
                 </a-form>
