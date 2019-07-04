@@ -25,6 +25,39 @@
                           ]"
           />
         </a-form-item>
+        <a-form-item label="选择片区" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+          <a-select
+            @change="fetchTowns"
+            v-decorator="[
+          'areaId',
+          {rules: [{ required: true, message: '请选择片区!' }]}
+        ]"
+            placeholder="请选择片区"
+          >
+            <!-- <a-select-option :key="0">---选择片区---</a-select-option> -->
+            <a-select-option
+              v-for="item in areas"
+              :key="item.id"
+              :value="item.id"
+            >{{item.name}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="选择村镇/街道" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+          <a-select
+            v-decorator="[
+          'townId',
+          {rules: [{ required: true, message: '请选择村镇/街道!' }]}
+        ]"
+            placeholder="请选择村镇/街道"
+          >
+            <!-- <a-select-option :key="0">---选择村镇/街道---</a-select-option> -->
+            <a-select-option
+              v-for="item in towns"
+              :key="item.id"
+              :value="item.id"
+            >{{item.name}}</a-select-option>
+          </a-select>
+        </a-form-item>
         <a-form-item label="真实姓名" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
             v-decorator="[
@@ -144,6 +177,8 @@ export default {
       productServiceMonth: 0,
       product:null,
       price: null,
+      towns:[],
+      areas:[],
     };
   },
   methods: {
@@ -151,6 +186,19 @@ export default {
       this.$axios.post("/fetch/product", {})
         .then(response => {
           this.products = response.data.data;
+        });
+    },
+    fetchAreas() {
+      this.$axios.post("/fetch/areas", {})
+        .then(response => {
+          this.areas = response.data.data;
+        });
+    },
+    fetchTowns(areaId) {
+      this.form.setFieldsValue({ townId:null });
+      this.$axios.post("/fetch/towns", {areaId:areaId})
+        .then(response => {
+          this.towns = response.data.data;
         });
     },
     handleSubmit(e) {
@@ -213,6 +261,7 @@ export default {
   },
   mounted() {
     this.fetchProducts();
+    this.fetchAreas();
   }
 };
 </script>

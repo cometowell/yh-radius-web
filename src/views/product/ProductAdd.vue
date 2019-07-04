@@ -235,8 +235,7 @@ export default {
         values.upStreamLimit = parseInt(values.upStreamLimit);
         values.downStreamLimit = parseInt(values.downStreamLimit);
         if (!err) {
-          this.axios
-            .post(this.CONFIG.apiUrl + "/product/add", values)
+          this.$axios.post("/product/add", values)
             .then(response => {
               alert(response.data.message);
               if (response.data.code == 1) {

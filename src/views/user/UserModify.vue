@@ -143,8 +143,7 @@ export default {
     getUserInfo() {
       var id = parseInt(this.$route.query.id);
       this.isUpdate = true;
-      this.axios
-        .post(this.CONFIG.apiUrl + "/user/info", { id: id })
+      this.$axios.post("/user/info", { id: id })
         .then(response => {
           this.visible = true;
           var data = response.data.data;
@@ -165,8 +164,7 @@ export default {
         });
     },
     fetchProducts() {
-      this.axios
-        .post(this.CONFIG.apiUrl + "/fetch/product", {})
+      this.$axios.post("/fetch/product", {})
         .then(response => {
           this.products = response.data.data;
         });
@@ -177,8 +175,7 @@ export default {
         if (!err) {
           delete values.expireTime;
           values['id'] = this.id;
-          this.axios
-            .post(this.CONFIG.apiUrl + "/user/update", values)
+          this.$axios.post("/user/update", values)
             .then(response => {
               alert(response.data.message);
               this.$router.push("/user");
