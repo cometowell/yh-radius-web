@@ -119,6 +119,22 @@ export default new Router({
           requireAuth: true
         },
         component: () => import('@/views/role/Role')
+      },
+      {
+        path: '/area',
+        name: 'area',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/area/Area')
+      },
+      {
+        path: '/town',
+        name: 'town',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/town/Town')
       }]
     }
   ]
