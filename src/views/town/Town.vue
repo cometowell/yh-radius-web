@@ -136,7 +136,7 @@ const columns = [
   { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "片区", dataIndex: "areaName", key: "areaName" },
   { title: "名称", dataIndex: "name", key: "name" },
-  { title: "code", dataIndex: "code", key: "code" },
+  { title: "编码", dataIndex: "code", key: "code" },
   { title: "描述", dataIndex: "description", key: "description" },
   {
     title: "操作",
@@ -160,9 +160,16 @@ export default {
       search: this.$form.createForm(this),
       isUpdate: false,
       id:0,
+      areas:[]
     };
   },
   methods: {
+    fetchAreas() {
+      this.$axios.post("/fetch/areas", {})
+        .then(response => {
+          this.areas = response.data.data;
+        });
+    },
     resetSearch() {
       this.search.resetFields();
       this.listTown({ page: pageInit });
@@ -268,6 +275,7 @@ export default {
   },
   mounted() {
     this.listTown({ page: pageInit });
+    this.fetchAreas();
   }
 };
 </script>
