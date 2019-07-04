@@ -80,12 +80,11 @@
                     />
                   </a-form-item>
                   <a-form-item
-                    v-if="isUpdate"
                     label="厂商"
                     :label-col="{ span: 5 }"
                     :wrapper-col="{ span: 12 }"
                   >
-                    <a-select
+                    <a-select :disabled="isUpdate"
                       v-decorator="[
                                     'vendorId',
                                     {rules: [{ required: true, message: '请选择NAS厂商!' }]}]"

@@ -75,6 +75,9 @@
         :rowKey="record => record.id"
         @change="searchManagerByParams"
       >
+        <template slot="statusName" slot-scope="text">
+          <div :style="getStatusColor(text)">{{text == 1 ? '正常' : '停用'}}</div>
+        </template>
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
             <a v-if="$store.getters.permissionGetter.indexOf(230) != -1" @click="modifyProduct(record.id)">
@@ -122,9 +125,7 @@ const columns = [
     title: "状态",
     dataIndex: "status",
     key: "status",
-    customRender: text => {
-      return productStates[text];
-    }
+    scopedSlots: { customRender: "statusName" }
   },
   {
     title: "绑定MAC",
@@ -177,6 +178,13 @@ export default {
     };
   },
   methods: {
+    getStatusColor(status) {
+      if(status == 1) {
+        return {};
+      } else {
+        return {'color':'#ce3838'};
+      }
+    },
     searchFunc(e) {
       e.preventDefault();
       this.search.validateFields((_, values) => {

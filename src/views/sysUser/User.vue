@@ -11,21 +11,15 @@
             <a-row :gutter="24">
               <a-col :span="6" :style="{ display:'block'}">
                 <a-form-item :label="'用户名'">
-                  <a-input
-                    v-decorator="[
-                'username'
-              ]"
-                    placeholder="用户名模糊搜索"
+                  <a-input id="s_username"
+                    v-decorator="['username']" placeholder="用户名模糊搜索"
                   />
                 </a-form-item>
               </a-col>
               <a-col :span="6" :style="{ display:'block'}">
                 <a-form-item :label="'姓名'">
-                  <a-input
-                    v-decorator="[
-                'realName'
-              ]"
-                    placeholder="姓名模糊搜索"
+                  <a-input id="s_real_name"
+                    v-decorator="['realName']" placeholder="姓名模糊搜索"
                   />
                 </a-form-item>
               </a-col>
@@ -172,6 +166,9 @@
         :rowKey="record => record.id"
         @change="searchManagerByParams"
       >
+        <template slot="statusName" slot-scope="text">
+          <div :style="getStatusColor(text)">{{managerStates[text]}}</div>
+        </template>
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
             <a v-if="$store.getters.permissionGetter.indexOf(412) != -1" @click="modifyManager(record.id)">
@@ -214,9 +211,7 @@ const columns = [
     title: "状态",
     dataIndex: "status",
     key: "status",
-    customRender: text => {
-      return managerStates[text];
-    }
+    scopedSlots: { customRender: "statusName" }
   },
   { title: "手机号码", dataIndex: "mobile", key: "mobile" },
   { title: "电子邮件", dataIndex: "email", key: "email" },
@@ -250,6 +245,9 @@ export default {
     };
   },
   methods: {
+    getStatusColor(text) {
+        return text == 4 ? {color: 'red'} : ( text == 3 ? {color: '#FF9933'} : (text == 2 ? {color:'#cc6869'} :{}))
+    },
     searchFunc(e) {
       e.preventDefault();
       this.search.validateFields((_, values) => {

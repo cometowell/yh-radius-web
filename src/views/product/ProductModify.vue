@@ -5,7 +5,7 @@
       <a-breadcrumb-item>修改套餐</a-breadcrumb-item>
     </a-breadcrumb>
     <div class="content-div">
-      <a-form :form="form" :style="{width:'800px', margin:'auto auto'}" @submit="handleUpdate">
+      <a-form :form="form" :style="{width:'800px', padding:'30px 0px', margin:'auto auto'}" @submit="handleUpdate">
         <a-form-item label="套餐名称" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
             v-decorator="[
@@ -221,8 +221,7 @@ export default {
        callback();
     },
     modifyProduct(id) {
-      this.axios
-        .post(this.CONFIG.apiUrl + "/product/info", { id: id })
+      this.$axios.post("/product/info", { id: id })
         .then(response => {
           this.visible = true;
           var data = response.data.data;
@@ -253,8 +252,7 @@ export default {
         values.upStreamLimit = parseInt(values.upStreamLimit);
         values.downStreamLimit = parseInt(values.downStreamLimit);
         
-      this.axios
-        .post(this.CONFIG.apiUrl + "/product/update", values)
+      this.$axios.post("/product/update", values)
         .then(response => {
           alert(response.data.message);
           if(response.data.code == 1) {
