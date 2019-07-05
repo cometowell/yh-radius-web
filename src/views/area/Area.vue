@@ -63,13 +63,25 @@
                                     ]"
                     />
                   </a-form-item>
-                  <a-form-item label="code" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-                    <a-input
+                  <a-form-item label="编码" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                    <a-input :disabled="isUpdate"
                       v-decorator="[
                                     'code',
                                     {rules: [{ required: true, message: '请输入编码!' }]}
                                     ]"
                     />
+                  </a-form-item>
+                  <a-form-item label="状态" v-if="isUpdate" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+                    <a-select
+                      v-decorator="[
+                    'status',
+                    {rules: [{ required: true, message: '状态' }]}
+                  ]"
+                      placeholder="状态"
+                    >
+                      <a-select-option :value="1">正常</a-select-option>
+                      <a-select-option :value="2">停用</a-select-option>
+                    </a-select>
                   </a-form-item>
                   <a-form-item label="描述信息" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
                     <a-textarea
@@ -96,6 +108,9 @@
         :rowKey="record => record.id"
         @change="searchAreaByParams"
       >
+        <template slot="statusName" slot-scope="text">
+          <div :style="getStatusColor(text)">{{text == 1 ? '正常' : '停用'}}</div>
+        </template>
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
             <a v-if="$store.getters.permissionGetter.indexOf(462) != -1" @click="modifyArea(record.id)">
@@ -120,6 +135,9 @@ const columns = [
   { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "名称", dataIndex: "name", key: "name" },
   { title: "编码", dataIndex: "code", key: "code" },
+    { title: "状态", dataIndex: "status", key: "status",
+      scopedSlots: { customRender: "statusName" }
+  },
   { title: "创建时间", dataIndex: "createTime", key: "createTime" },
   { title: "修改时间", dataIndex: "updateTime", key: "updateTime" },
   { title: "描述", dataIndex: "description", key: "description" },
@@ -148,6 +166,13 @@ export default {
     };
   },
   methods: {
+    getStatusColor(status) {
+      if(status == 1) {
+        return {};
+      } else {
+        return {'color':'#ce3838'};
+      }
+    },
     resetSearch() {
       this.search.resetFields();
       this.listArea({ page: pageInit });

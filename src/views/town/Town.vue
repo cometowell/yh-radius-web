@@ -56,7 +56,7 @@
               <template>
                   <a-form :form="form" @submit="handleSubmit">
                     <a-form-item label="选择片区" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
-                    <a-select
+                    <a-select :disabled="isUpdate"
                       v-decorator="[
                     'areaId',
                     {rules: [{ required: true, message: '请选择片区!' }]}
@@ -80,12 +80,24 @@
                     />
                   </a-form-item>
                   <a-form-item label="编码" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
-                    <a-input
+                    <a-input :disabled="isUpdate"
                       v-decorator="[
                                     'code',
                                     {rules: [{ required: true, message: '请输入村镇/街道编码!' }]}
                                     ]"
                     />
+                  </a-form-item>
+                  <a-form-item label="状态"  v-if="isUpdate" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
+                    <a-select
+                      v-decorator="[
+                    'status',
+                    {rules: [{ required: true, message: '状态' }]}
+                  ]"
+                      placeholder="状态"
+                    >
+                      <a-select-option :value="1">正常</a-select-option>
+                      <a-select-option :value="2">停用</a-select-option>
+                    </a-select>
                   </a-form-item>
                   <a-form-item label="描述信息" :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
                     <a-textarea
@@ -112,6 +124,9 @@
         :rowKey="record => record.id"
         @change="searchTownByParams"
       >
+        <template slot="statusName" slot-scope="text">
+          <div :style="getStatusColor(text)">{{text == 1 ? '正常' : '停用'}}</div>
+        </template>
         <span slot="action" slot-scope="record" class="table-operation">
           <span>
             <a v-if="$store.getters.permissionGetter.indexOf(472) != -1" @click="modifyTown(record.id)">
@@ -136,6 +151,9 @@ const columns = [
   { title: "序号", key: "index", customRender: (text, record, index) => index+1 },
   { title: "片区", dataIndex: "areaName", key: "areaName" },
   { title: "名称", dataIndex: "name", key: "name" },
+      { title: "状态", dataIndex: "status", key: "status",
+      scopedSlots: { customRender: "statusName" }
+  },
   { title: "编码", dataIndex: "code", key: "code" },
   { title: "描述", dataIndex: "description", key: "description" },
   {
@@ -164,6 +182,13 @@ export default {
     };
   },
   methods: {
+    getStatusColor(status) {
+      if(status == 1) {
+        return {};
+      } else {
+        return {'color':'#ce3838'};
+      }
+    },
     fetchAreas() {
       this.$axios.post("/fetch/areas", {})
         .then(response => {
