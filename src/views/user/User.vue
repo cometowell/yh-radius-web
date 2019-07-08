@@ -297,7 +297,6 @@ export default {
        this.continueForm.validateFields((err, values) => {
          values.id = parseInt(values.id);
          values.count = parseInt(values.count);
-         values.beContinue = true;
          this.$axios.post("/user/continue", values).then(response => {
              alert(response.data.message);
              this.continueVisible = false;

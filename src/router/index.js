@@ -57,6 +57,14 @@ export default new Router({
         component: () => import('@/views/product/Product')
       },
       {
+        path: '/product/add',
+        name: 'productAdd',
+        meta: {
+          requireAuth: true
+        },
+        component: () => import('@/views/product/ProductAdd')
+      },
+      {
         path: '/product/modify',
         name: 'productModify',
         meta: {

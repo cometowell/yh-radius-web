@@ -58,9 +58,9 @@
       <a-card-grid :class="'user-grid-25'">套餐并发数：</a-card-grid>
       <a-card-grid :class="'user-grid-25'">{{userInfo.radProduct.concurrentCount}}</a-card-grid>
       <a-card-grid :class="'user-grid-25'">上行限速(M)：</a-card-grid>
-      <a-card-grid :class="'user-grid-25'">{{userInfo.radProduct.upStreamLimit / 1024}}</a-card-grid>
+      <a-card-grid :class="'user-grid-25'">{{userInfo.radProduct.upStreamLimit}}/Mbps</a-card-grid>
       <a-card-grid :class="'user-grid-25'">下行限速(M)：</a-card-grid>
-      <a-card-grid :class="'user-grid-25'">{{userInfo.radProduct.downStreamLimit / 1024}}</a-card-grid>
+      <a-card-grid :class="'user-grid-25'">{{userInfo.radProduct.downStreamLimit}}/Mbps</a-card-grid>
     </a-card>
     <a-card title="订购记录" :style="{ marginTop: '10px' }">
       <template>

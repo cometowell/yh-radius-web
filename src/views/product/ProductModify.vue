@@ -24,7 +24,6 @@
             placeholder="请选择套餐类型"
           >
             <a-select-option :value="1">包月</a-select-option>
-            <a-select-option :value="2">计时</a-select-option>
             <a-select-option :value="3">流量</a-select-option>
           </a-select>
         </a-form-item>
@@ -69,8 +68,8 @@
         ]"
             placeholder="请选择状态"
           >
-            <a-select-option :value="1">是</a-select-option>
-            <a-select-option :value="2">否</a-select-option>
+            <a-select-option :value="1">正常</a-select-option>
+            <a-select-option :value="2">停用</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -115,14 +114,14 @@
             placeholder="套餐流量"
           ></a-input>
         </a-form-item>
-        <a-form-item :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+        <a-form-item v-if="type == 3" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <span slot="label">
             流量清理周期
             <a-tooltip title="默认表示无限时长:2099年,固定表示在用户开户时选择的到期时间，开户时不选到期时间则默认">
               <a-icon type="question-circle-o"/>
             </a-tooltip>
           </span>
-          <a-select :disabled=true
+          <a-select :disabled=true 
             v-decorator="[
           'flowClearCycle',
           {rules: [{ required: true, message: '流量清零周期' }]}
@@ -135,7 +134,7 @@
             <a-select-option :value="4">固定</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="价格" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+        <a-form-item label="价格(元)" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
             v-decorator="[
           'price',

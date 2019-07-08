@@ -72,7 +72,7 @@
               <a-icon type="question-circle-o" />
             </a-tooltip>
           </span>
-          <a-date-picker style="width:100%" placeholder="选填,到期时间" disabled
+          <a-date-picker style="width:100%" placeholder="选填,到期时间"
             v-decorator="['expireTime', {initialValue: expire,rules: [{ type: 'object'}]}]"
           />
         </a-form-item>

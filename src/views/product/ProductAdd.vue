@@ -5,7 +5,7 @@
       <a-breadcrumb-item>添加套餐</a-breadcrumb-item>
     </a-breadcrumb>
     <div class="content-div">
-      <a-form :form="form" :style="{width:'800px', margin:'auto auto'}" @submit="handleSubmit">
+      <a-form :form="form" :style="{width:'800px', padding:'30px 0px', margin:'auto auto'}" @submit="handleSubmit">
         <a-form-item label="套餐名称" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
             v-decorator="[
@@ -25,7 +25,6 @@
             placeholder="请选择套餐类型"
           >
             <a-select-option :value="1">包月</a-select-option>
-            <a-select-option :value="2">计时</a-select-option>
             <a-select-option :value="3">流量</a-select-option>
           </a-select>
         </a-form-item>
@@ -124,7 +123,7 @@
             <a-select-option :value="4">固定</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item label="价格" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+        <a-form-item label="价格(元)" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
           <a-input
             v-decorator="[
           'price',
