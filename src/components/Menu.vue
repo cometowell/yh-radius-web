@@ -1,20 +1,22 @@
 <template>
     <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
-      <div class="logo" @click="$router.push('/index')"/>
+      <div class="logo" @click="$router.push('/index')" />
       <a-menu mode="inline" theme="dark" :openKeys="openKeys" @openChange="onOpenChange">
         <template v-for="menu in menus">
-          <a-sub-menu v-if="hasChild(menu)" :key="menu.frontKey">
-            <span slot="title">
-              <a-icon :type="menu.icon" />
-              <span>{{menu.name}}</span>
-            </span>
-              <a-menu-item v-for="(c,index) in menu.children" @click="jumpTo(c.frontRouter)" :key="menu.frontKey + index">
-                <i class="glyphicon glyphicon-record"/> {{c.name}}
-              </a-menu-item>
-          </a-sub-menu>
-          <a-menu-item v-else :key="menu.frontKey" @click="jumpTo(menu.frontRouter)">
-            <a-icon :type="menu.icon" /><span>{{menu.name}}</span>
-          </a-menu-item>
+          <template v-if="menu.show == 1">
+            <a-sub-menu v-if="hasChild(menu)" :key="menu.frontKey">
+              <span slot="title">
+                <a-icon :type="menu.icon" />
+                <span>{{menu.name}}</span>
+              </span>
+                <a-menu-item v-for="(c,index) in menu.children" @click="jumpTo(c.frontRouter)" :key="menu.frontKey + index">
+                  <i class="glyphicon glyphicon-record"/> {{c.name}}
+                </a-menu-item>
+            </a-sub-menu>
+            <a-menu-item v-else :key="menu.frontKey" @click="jumpTo(menu.frontRouter)">
+              <a-icon :type="menu.icon" /><span>{{menu.name}}</span>
+            </a-menu-item>
+          </template>
         </template>
       </a-menu>
     </a-layout-sider>
