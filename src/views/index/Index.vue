@@ -4,7 +4,7 @@
       <a-breadcrumb-item>首页</a-breadcrumb-item>
       <a-breadcrumb-item>统计视图</a-breadcrumb-item>
     </a-breadcrumb>
-    <div>
+    <div style="min-width: 1300px">
       <a-row :gutter="16">
         <a-col class="a-col-class" :span="12">
           <a-card :bordered="true">
@@ -73,10 +73,6 @@ export default {
 </script>
 
 <style scoped>
-div .echarts {
-  width: 650px;
-  height: 350px;
-}
 .a-col-class {
   margin-top: 5px;
 }
