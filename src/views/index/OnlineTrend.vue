@@ -52,22 +52,16 @@ export default {
           yAxis: [
             {
               type: "value",
-              name: "水量",
-              min: 0,
-              max: 250,
-              interval: 50,
+              name: "在线用户数",
               axisLabel: {
-                formatter: "{value} ml"
+                formatter: "{value} 人次"
               }
             },
             {
               type: "value",
-              name: "温度",
-              min: 0,
-              max: 25,
-              interval: 5,
+              name: "在线用户数",
               axisLabel: {
-                formatter: "{value} °C"
+                formatter: "{value} 人次"
               }
             }
           ],
