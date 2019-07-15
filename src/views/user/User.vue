@@ -71,6 +71,7 @@
           title="续订套餐"
           v-model="continueVisible"
           :footer="null"
+          @cancel = "continueCancel"
           :maskClosable=false
         >
           <template>
@@ -120,7 +121,7 @@
                 :label-col="{ span: 5 }"
                 :wrapper-col="{ span: 12 }"
               >
-                <a-select @change="productSelected"
+                <a-select @change="fee"
                   v-decorator="[
                     'productId',
                     {rules: [{ required: true, message: '请选择续订产品!' }]}
@@ -143,6 +144,13 @@
                     {initialValue:1, rules: [{ validator:validateCount}]}
                   ]"
                 />
+              </a-form-item>
+              <a-form-item
+                label="费用(元)"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <label v-if="continueFee > 0">{{continueFee / 100.0}}元</label>
               </a-form-item>
               <a-form-item
                 :wrapper-col="{ span: 12, offset: 5 }"
@@ -244,6 +252,7 @@ const columns = [
   }
 ];
 import UserInfo from "./UserInfo"
+import { returnStatement } from '@babel/types';
 export default {
   components: {
     UserInfo
@@ -271,6 +280,7 @@ export default {
       userId: 0,
       continueUser: null,
       productType: 0,
+      continueFee: null,
     };
   },
   methods: {
@@ -281,9 +291,6 @@ export default {
           return;
       } 
       callback();
-    },
-    productSelected(value, option) {
-      this.productType = option.data.attrs.type;
     },
     fetchProducts() {
       this.$axios
@@ -431,6 +438,17 @@ export default {
             });
         }
       });
+    },
+    fee(value) {
+      this.$axios.post("/product/info", {id: value}).then(response => {
+          var product = response.data.data;
+          this.continueFee = product.price;
+      }).catch(err => {
+          console.log(err);
+      });
+    },
+    continueCancel() {
+      this.continueFee = 0;
     }
   },
   mounted() {
