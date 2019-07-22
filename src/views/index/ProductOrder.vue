@@ -26,7 +26,7 @@ export default {
         .then(response => {
           this.option = {
             title: {
-              text: "产品订购趋势",
+              text: "7天内产品订购趋势",
               x: "center"
             },
             tooltip: {
